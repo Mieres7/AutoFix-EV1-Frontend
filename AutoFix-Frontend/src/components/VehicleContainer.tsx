@@ -1,15 +1,19 @@
+import { Card } from "./VehicleList";
+
 export function VehicleContainer() {
   return (
     <div className="vehicle-container">
       <div className="vehicles">
-        <div className="vehicle-item"></div>
-        <div className="vehicle-item"></div>
-        <div className="vehicle-item"></div>
-        <div className="vehicle-item"></div>
-
-        <div className="vehicle-item"></div>
-        <div className="vehicle-item"></div>
-        <div className="vehicle-item"></div>
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
       </div>
 
       <div className="vehicle-registration">

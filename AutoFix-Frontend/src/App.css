@@ -24,6 +24,17 @@
   width: 100%;
 }
 
+.repairs {
+  display: grid;
+  grid-template-rows: 12.24% auto;
+  grid-template-columns: 12.24% auto;
+  grid-template-areas:
+    "side-bar header"
+    "side-bar repairs-container";
+  height: 100vh;
+  width: 100%;
+}
+
 /* COMPONENTS */
 
 /* SideBar */
@@ -417,6 +428,35 @@
   border-radius: 10px;
 }
 
+/* Repairs Container */
+
+.repairs-container {
+  grid-area: repairs-container;
+  padding: 55px;
+  display: grid;
+  grid-template-columns: 70% 30%;
+  grid-template-areas: "repair-list repair-actions";
+}
+
+.repair-list {
+  grid-area: repair-list;
+  /* border-radius: 16px; */
+  border: 0.5px solid rgb(184, 184, 184);
+  overflow: hidden;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.card {
+  width: 50px;
+  height: 50px;
+  background: #000;
+}
+
+.repair-actions {
+  grid-area: repair-actions;
+}
+
 .flex-row {
   display: flex;
   flex-direction: row;
@@ -437,7 +477,7 @@
 
 /* Media Querys */
 
-@media (max-width: 1536px) and (max-height: 731px) {
+@media (max-width: 1537px) and (max-height: 732px) {
   .cars-general {
     width: calc((1348px - 110px) * 0.571428);
     height: calc((641.55px - 110px) * 0.50794);
