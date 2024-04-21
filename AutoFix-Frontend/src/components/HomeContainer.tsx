@@ -1,10 +1,40 @@
 import { Link } from "react-router-dom";
-import { RightArrowIcon, Toyota, Ford, Hyundai, Honda } from "../assets/Icons";
+import {
+  RightArrowIcon,
+  Toyota,
+  Ford,
+  Hyundai,
+  Honda,
+  ToolIcon,
+  TruckIcon,
+} from "../assets/Icons";
 
 export function HomeContainer() {
   return (
     <div className="home-container">
-      <div className="cars-general"></div>
+      <div className="cars-general">
+        <div className="cars-general-text">
+          <div>
+            <span>Services</span> <br />
+          </div>
+          <div className="car-toolbar">
+            <div className="car-toolbar-item">
+              <Link to={"/"}>
+                <TruckIcon /> Add Vehicle
+              </Link>
+            </div>
+            <div className="car-toolbar-item">
+              <Link to={"/"}>
+                <ToolIcon />
+                Add Repair
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className="cars-general-img">
+          <img src="../src/assets/imgs/natu.jpg" alt="" />
+        </div>
+      </div>
       <div className="stats-general">
         <div className="stats-general-text">
           <div>
@@ -23,7 +53,7 @@ export function HomeContainer() {
         </div>
       </div>
       <div className="top-brands-section">
-        <div className="flex-row">
+        <div>
           <span>
             Top brands
             <Link to={"/"}>
