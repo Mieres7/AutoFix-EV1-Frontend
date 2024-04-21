@@ -19,12 +19,12 @@ export function HomeContainer() {
           </div>
           <div className="car-toolbar">
             <div className="car-toolbar-item">
-              <Link to={"/"}>
+              <Link to={"/vehicles"}>
                 <TruckIcon /> Add Vehicle
               </Link>
             </div>
             <div className="car-toolbar-item">
-              <Link to={"/"}>
+              <Link to={"/repairs"}>
                 <ToolIcon />
                 Add Repair
               </Link>
@@ -43,7 +43,7 @@ export function HomeContainer() {
             Completed:
           </div>
           <div>
-            <Link to={"/"}>
+            <Link to={"/repairs"}>
               View all repairs <RightArrowIcon />
             </Link>
           </div>
