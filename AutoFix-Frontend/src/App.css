@@ -456,20 +456,34 @@
   flex-direction: row;
   overflow: hidden;
   overflow-y: auto;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
 .repair-item {
-  height: 70px;
+  /* height: 70px; */
   width: 95%;
   padding: 10px;
-  align-items: center;
+  /* align-items: center; */
   margin-bottom: 10px;
   border-radius: 10px;
   border: 0.5px solid rgb(184, 184, 184);
   display: flex;
+  /* justify-content: space-between; */
+  /* align-items: center; */
+}
+
+.repair-item > div {
+  width: 100%;
+}
+
+.repair-item > div > ul > li {
+  width: 100%;
+  list-style: none;
+  display: flex;
   justify-content: space-between;
+  align-items: center;
+  height: 40px;
 }
 
 .repair-actions {

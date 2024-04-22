@@ -1,66 +1,72 @@
+import { useEffect, useState } from "react";
+
+import vehicleService from "../services/vehicle.service";
+import { Vehicle } from "../models/Vehicle";
+import { CreateVehicle } from "../models/CreateVehicle";
+import { Brand } from "../models/Brand";
+import brandService from "../services/brand.service";
+
 export function VehicleContainer() {
-  const vehicles = [
-    {
-      vehicleId: 1,
-      registration: "ABC123",
-      model: "Model X",
-      vehicleType: "SUV",
-      manufactureYear: "2019",
-      motorType: "Electric",
-      seats: 5,
-      mileage: 25000,
-      repairs: 2,
-      brand_id: 101,
-    },
-    {
-      vehicleId: 2,
-      registration: "XYZ789",
-      model: "Model S",
-      vehicleType: "Sedan",
-      manufactureYear: "2018",
-      motorType: "Hybrid",
-      seats: 5,
-      mileage: 15000,
-      repairs: 1,
-      brand_id: 102,
-    },
-    {
-      vehicleId: 3,
-      registration: "DEF456",
-      model: "Model 3",
-      vehicleType: "Coupe",
-      manufactureYear: "2020",
-      motorType: "Gasoline",
-      seats: 4,
-      mileage: 10000,
-      repairs: 0,
-      brand_id: 103,
-    },
-    {
-      vehicleId: 4,
-      registration: "DEF456",
-      model: "Model 3",
-      vehicleType: "Coupe",
-      manufactureYear: "2020",
-      motorType: "Gasoline",
-      seats: 4,
-      mileage: 10000,
-      repairs: 0,
-      brand_id: 103,
-    },
-    {
-      vehicleId: 4,
-      registration: "DEF456",
-      model: "Model 3",
-      vehicleType: "Coupe",
-      manufactureYear: "2020",
-      motorType: "Gasoline",
-      seats: 4,
-      mileage: 10000,
-      repairs: 0,
-      brand_id: 103,
-    },
-  ];
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+
+  const [createVehicle, setCreateVehicle] = useState<CreateVehicle>({
+    registration: "",
+    model: "",
+    vehicleType: "",
+    motorType: "",
+    manufactureYear: "",
+    seats: 0,
+    mileage: 0,
+    brandId: 0,
+  });
+  const [brands, setBrands] = useState<Brand[]>([]);
+
+  const init = () => {
+    vehicleService
+      .getAll()
+      .then((response: any) => {
+        setVehicles(response.data);
+        // console.log(response);
+      })
+      .catch((e) => console.log(e));
+
+    brandService.getAll().then((response: any) => {
+      setBrands(response.data);
+    });
+  };
+
+  const addVehicle = (e: React.FormEvent): any => {
+    e.preventDefault();
+    const { brandId, vehicleType, motorType, ...vehicle } = createVehicle;
+    const postVehicle = {
+      ...vehicle,
+      brandId: parseInt(brandId as any),
+      vehicleType: vehicleType.toUpperCase(),
+      motorType: motorType.toUpperCase(),
+    };
+
+    vehicleService
+      .post(postVehicle)
+      .then(() => {
+        init();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setCreateVehicle((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  useEffect(() => {
+    init();
+  }, []);
 
   return (
     <div className="vehicle-container">
@@ -79,55 +85,103 @@ export function VehicleContainer() {
         <section className="vehicle-registration-text">
           <span>Vehicle Data</span>
         </section>
-        <div className="vehicle-form flex-column">
+        <form className="vehicle-form flex-column" onSubmit={addVehicle}>
           Registration
-          <input type="text" className="input-form" />
+          <input
+            type="text"
+            className="input-form"
+            name="registration"
+            value={createVehicle.registration}
+            onChange={handleChange}
+          />
           Model
-          <input type="text" className="input-form" />
+          <input
+            type="text"
+            className="input-form"
+            name="model"
+            value={createVehicle.model}
+            onChange={handleChange}
+          />
           <div className="flex-row gap-10">
             <div className="flex-column gap-5">
               Vehicle Type
-              <select name="VehicleType" id="" className="input-form-double">
-                <option value="SEDAN">Sedan</option>
-                <option value="HATCHBACK">Hatchback</option>
-                <option value="SUV">Suv</option>
-                <option value="PICKUP">Pickup</option>
-                <option value="VAN">Van</option>
+              <select
+                className="input-form-double"
+                name="vehicleType"
+                value={createVehicle.vehicleType}
+                onChange={handleChange}
+              >
+                <option value="Sedan">Sedan</option>
+                <option value="Hatchback">Hatchback</option>
+                <option value="Suv">Suv</option>
+                <option value="Pickup">Pickup</option>
+                <option value="Van">Van</option>
               </select>
             </div>
             <div className="flex-column gap-5">
               Motor Type
-              <select name="MotorType" id="" className="input-form-double">
-                <option value="GASOLINE">Gasoline</option>
-                <option value="DIESEL">Diesel</option>
-                <option value="HYBRID">Hybrid</option>
-                <option value="ELECTRIC">Electric</option>
+              <select
+                name="motorType"
+                className="input-form-double"
+                value={createVehicle.motorType}
+                onChange={handleChange}
+              >
+                <option value="Gasoline">Gasoline</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Electric">Electric</option>
               </select>
             </div>
           </div>
           <div className="flex-row gap-10">
             <div className="flex-column gap-5">
               Fab. Year
-              <input type="text" className="input-form-triple" />
+              <input
+                type="text"
+                name="manufactureYear"
+                className="input-form-triple"
+                value={createVehicle.manufactureYear}
+                onChange={handleChange}
+              />
             </div>
             <div className="flex-column gap-5">
               Seats
-              <input type="number" className="input-form-triple" />
+              <input
+                type="number"
+                name="seats"
+                className="input-form-triple"
+                value={createVehicle.seats}
+                onChange={handleChange}
+              />
             </div>
             <div className="flex-column gap-5">
               Mileage
-              <input type="number" className="input-form-triple" />
+              <input
+                type="number"
+                name="mileage"
+                className="input-form-triple"
+                value={createVehicle.mileage}
+                onChange={handleChange}
+              />
             </div>
           </div>
           Brand
-          <select name="MotorType" id="" className="input-form">
-            <option value="GASOLINE">Gasoline</option>
-            <option value="DIESEL">Diesel</option>
-            <option value="HYBRID">Hybrid</option>
-            <option value="ELECTRIC">Electric</option>
+          <select
+            name="brandId"
+            className="input-form"
+            value={createVehicle.brandId}
+            onChange={handleChange}
+          >
+            {brands.map((brand) => (
+              <option key={brand.brandId} value={brand.brandId}>
+                {brand.brandName}
+              </option>
+            ))}
           </select>
-          <button className="input-form">Save Vehicle</button>
-        </div>
+          <button className="input-form" type="submit">
+            Save Vehicle
+          </button>
+        </form>
       </div>
     </div>
   );

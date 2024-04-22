@@ -1,136 +1,207 @@
+import { useEffect, useState } from "react";
 import { SparkleIcon } from "../assets/Icons";
+import repairService from "../services/repair.service";
+import { Vehicle } from "../models/Vehicle";
+import vehicleService from "../services/vehicle.service";
+import { CreateRepair } from "../models/CreateRepair";
+import { ReapairTypeCost } from "../models/RepairTypeCost";
+import { Repair } from "../models/Repair";
+import { VehicleRepair } from "../models/VehicleRepair";
 
 export function RepairsContainer() {
-  const vehicles = [
-    {
-      vehicleId: 1,
-      registration: "ABC123",
-      model: "Model X",
-      vehicleType: "SUV",
-      manufactureYear: "2019",
-      motorType: "Electric",
-      seats: 5,
-      mileage: 25000,
-      repairs: 2,
-      brand_id: 101,
-    },
-    {
-      vehicleId: 2,
-      registration: "XYZ789",
-      model: "Model S",
-      vehicleType: "Sedan",
-      manufactureYear: "2018",
-      motorType: "Hybrid",
-      seats: 5,
-      mileage: 15000,
-      repairs: 1,
-      brand_id: 102,
-    },
-    {
-      vehicleId: 3,
-      registration: "DEF456",
-      model: "Model 3",
-      vehicleType: "Coupe",
-      manufactureYear: "2020",
-      motorType: "Gasoline",
-      seats: 4,
-      mileage: 10000,
-      repairs: 0,
-      brand_id: 103,
-    },
-    {
-      vehicleId: 4,
-      registration: "DEF456",
-      model: "Model 3",
-      vehicleType: "Coupe",
-      manufactureYear: "2020",
-      motorType: "Gasoline",
-      seats: 4,
-      mileage: 10000,
-      repairs: 0,
-      brand_id: 103,
-    },
-    {
-      vehicleId: 4,
-      registration: "DEF456",
-      model: "Model 3",
-      vehicleType: "Coupe",
-      manufactureYear: "2020",
-      motorType: "Gasoline",
-      seats: 4,
-      mileage: 10000,
-      repairs: 0,
-      brand_id: 103,
-    },
-  ];
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [repairs, setRepairs] = useState<Repair[]>([]);
+  const [vr, setVr] = useState<VehicleRepair[]>([]);
 
-  const repairType = [
-    { repairType: "type1", repairTypeId: 1 },
-    { repairType: "type2", repairTypeId: 2 },
-  ];
+  const [newRepair, setNewRepair] = useState<CreateRepair>({
+    vehicleId: 0,
+    bonus: false,
+    repairType: 0,
+  });
 
-  const repairs = [
-    {
-      repaidId: 1,
-      repairType: "asdfkljdsfksd",
-      registration: "ABCD12",
-    },
-    {
-      repaidId: 1,
-      repairType: "asdfkljdsfksd",
-      registration: "ABCD12",
-    },
-    {
-      repaidId: 1,
-      repairType: "asdfkljdsfksd",
-      registration: "ABCD12",
-    },
-    {
-      repaidId: 1,
-      repairType: "asdfkljdsfksd",
-      registration: "ABCD12",
-    },
-    {
-      repaidId: 1,
-      repairType: "asdfkljdsfksd",
-      registration: "ABCD12",
-    },
-    {
-      repaidId: 1,
-      repairType: "asdfkljdsfksd",
-      registration: "ABCD12",
-      totalCost: 12434,
-    },
-  ];
+  const [typeCost, setTypeCost] = useState<ReapairTypeCost[]>([]);
+
+  const init = () => {
+    repairService
+      .getTypeCost()
+      .then((response) => {
+        setTypeCost(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
+    repairService
+      .getAll()
+      .then((response) => {
+        setRepairs(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
+    repairService
+      .getAllvr()
+      .then((response) => {
+        setVr(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
+    vehicleService
+      .getAll()
+      .then((response) => {
+        setVehicles(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const addRepair = (e: React.FormEvent): any => {
+    e.preventDefault();
+    console.log(newRepair);
+    const { vehicleId, repairType, ...repair } = newRepair;
+    const postRepair = {
+      ...repair,
+      vehicleId: parseInt(vehicleId as any),
+      repairType: parseInt(repairType as any),
+    };
+
+    repairService
+      .post(postRepair)
+      .then(() => {
+        init();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const getTotalCost = (id: number) => {
+    const newid = id.toString();
+
+    repairService.getlTotalCost(newid).then(() => {
+      init();
+    });
+  };
+
+  const updateRepair = (timeOption: any, repairId: number) => {
+    const now = new Date();
+    const LocalDateTime = now.toISOString().replace("Z", "");
+    console.log(LocalDateTime);
+    switch (timeOption) {
+      case 1:
+        const checkOutDateTime = {
+          checkOutDateTime: now,
+        };
+        repairService.update(checkOutDateTime, repairId);
+        break;
+      case 2:
+        const costumerDateTime = {
+          costumerDateTime: now,
+        };
+        repairService.update(costumerDateTime, repairId);
+        break;
+    }
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setNewRepair((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
 
   const bonusBrands = ["Toyota", "Ford", "Hyundai", "Honda"];
 
   return (
     <div className="repairs-container">
       <div className="repair-list">
-        {repairs.map((repair) => (
+        {vehicles.map((vehicle) => (
           <div className="repair-item">
-            <div>
-              Registration: {repair.registration} &nbsp; Repair Type:{" "}
-              {repair.repairType} &nbsp; Total Cost: {repair.totalCost}
+            <div key={vehicle.vehicleId}>
+              Vehicle: {vehicle.registration}
+              <ul>
+                {vr
+                  .filter(
+                    (vehicleRepair) =>
+                      vehicleRepair.vehicleId === vehicle.vehicleId
+                  )
+                  .map((vehicleRepair) => {
+                    const repair = repairs.find(
+                      (p) => p.repairId === vehicleRepair.repairId
+                    );
+                    return repair ? (
+                      <li key={`${repair.repairId}-${vehicle.vehicleId}`}>
+                        Repair Type {repair.repairTypeCostId}
+                        <span>Total Cost: {repair.totalCost}</span>
+                        <button
+                          className="input-form"
+                          type="button"
+                          onClick={() => getTotalCost(repair.repairId)}
+                        >
+                          Get Cost
+                        </button>
+                        <button
+                          className="input-form"
+                          type="button"
+                          onClick={() => updateRepair(1, repair.repairId)}
+                        >
+                          CheckOut
+                        </button>
+                        <button
+                          className="input-form"
+                          type="button"
+                          onClick={() => updateRepair(2, repair.repairId)}
+                        >
+                          Leave
+                        </button>
+                      </li>
+                    ) : null;
+                  })}
+              </ul>
             </div>
-            <button className="input-form">Get Cost</button>
           </div>
         ))}
       </div>
       <div className="repair-actions">
-        <div className="repair-form flex-column gap-5">
+        <form className="repair-form flex-column gap-5" onSubmit={addRepair}>
           <div className="repair-form-text">Add Repair</div>
           Vehicle
-          <select name="registration" id="" className="input-form">
+          <select
+            name="vehicleId"
+            className="input-form"
+            value={newRepair.vehicleId}
+            onChange={handleChange}
+          >
             {vehicles.map((vehicle) => (
-              <option> {vehicle.registration} </option>
+              <option key={vehicle.vehicleId} value={vehicle.vehicleId}>
+                {" "}
+                {vehicle.registration}{" "}
+              </option>
             ))}
           </select>
           Repair Type
-          <select name="repairTpye" id="" className="input-form">
-            {repairType.map((repairType) => (
-              <option>{repairType.repairType}</option>
+          <select
+            name="repairType"
+            id=""
+            className="input-form"
+            value={newRepair.repairType}
+            onChange={handleChange}
+          >
+            {typeCost.map((tc) => (
+              <option key={tc.repairTypeCostId} value={tc.repairTypeCostId}>
+                {tc.repairType}
+              </option>
             ))}
           </select>
           Save Repair
@@ -142,7 +213,7 @@ export function RepairsContainer() {
               <SparkleIcon />
             </button>
           </div>
-        </div>
+        </form>
         <div className="bonus-form flex-column">
           <div className="repair-form-text ">Bonus Register</div>
           Brand
