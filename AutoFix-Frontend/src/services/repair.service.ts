@@ -4,8 +4,8 @@ const getAll = () => {
   return httpClient.get("/repair/s");
 };
 
-const getlTotalCost = (id: string) => {
-  return httpClient.get(`/repair/${id}`);
+const getTotalCost = (id: any) => {
+  return httpClient.get(`/repair/${id}/hola`);
 };
 
 const post = (data: any) => {
@@ -26,4 +26,32 @@ const getAllvr = () => {
   return httpClient.get("/vehicleRepair/");
 };
 
-export default { getAll, getlTotalCost, post, getTypeCost, getAllvr, update };
+// reports
+
+const getCost = () => {
+  return httpClient.get("report/cost/record");
+};
+
+const getAverage = () => {
+  return httpClient.get("report/average");
+};
+
+const getType = () => {
+  return httpClient.get("report/summary/type");
+};
+const getMotor = () => {
+  return httpClient.get("report/summary/motor");
+};
+
+export default {
+  getAll,
+  getTotalCost,
+  post,
+  getTypeCost,
+  getAllvr,
+  update,
+  getCost,
+  getAverage,
+  getType,
+  getMotor,
+};

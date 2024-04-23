@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { HomeIcon, StatsIcon, ToolIcon2, TruckIcon2 } from "../assets/Icons";
+import { HomeIcon, ReportIcon, ToolIcon2, TruckIcon2 } from "../assets/Icons";
 
 export function SideBar() {
   return (
@@ -39,11 +39,11 @@ export function SideBar() {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/stats">
+          <NavLink to="/reports">
             <div id="active"></div>
             <section className="side-bar-icon-section">
-              <StatsIcon />
-              <span>Statistics</span>
+              <ReportIcon />
+              <span>Reports</span>
             </section>
           </NavLink>
         </li>

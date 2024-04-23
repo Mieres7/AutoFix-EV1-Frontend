@@ -79,28 +79,30 @@ export function RepairsContainer() {
       });
   };
 
-  const getTotalCost = (id: number) => {
-    const newid = id.toString();
-
-    repairService.getlTotalCost(newid).then(() => {
+  const getTotalCost = (id: any) => {
+    repairService.getTotalCost(id).then(() => {
       init();
     });
   };
 
   const updateRepair = (timeOption: any, repairId: number) => {
     const now = new Date();
-    const LocalDateTime = now.toISOString().replace("Z", "");
-    console.log(LocalDateTime);
+    console.log(now.toISOString().replace("Z", "")); // Local time sin el 'Z'
+
     switch (timeOption) {
       case 1:
+        const checkOutDate = new Date(now.getTime()); // Crear nueva instancia para evitar mutación de 'now'
+        checkOutDate.setDate(now.getDate() + 2); // Agregar 2 días
         const checkOutDateTime = {
-          checkOutDateTime: now,
+          checkOutDateTime: checkOutDate,
         };
         repairService.update(checkOutDateTime, repairId);
         break;
       case 2:
+        const customerDate = new Date(now.getTime()); // Crear nueva instancia para evitar mutación de 'now'
+        customerDate.setDate(now.getDate() + 4); // Agregar 4 días
         const costumerDateTime = {
-          costumerDateTime: now,
+          costumerDateTime: customerDate,
         };
         repairService.update(costumerDateTime, repairId);
         break;

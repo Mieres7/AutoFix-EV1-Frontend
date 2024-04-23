@@ -40,14 +40,16 @@ export function VehicleContainer() {
     const { brandId, vehicleType, motorType, ...vehicle } = createVehicle;
     const postVehicle = {
       ...vehicle,
-      brandId: parseInt(brandId as any),
+      brandId: parseInt((brandId + 1) as any),
       vehicleType: vehicleType.toUpperCase(),
       motorType: motorType.toUpperCase(),
     };
 
     vehicleService
       .post(postVehicle)
-      .then(() => {
+      .then((response) => {
+        console.log(response.data);
+
         init();
       })
       .catch((e) => {
@@ -61,7 +63,7 @@ export function VehicleContainer() {
     const { name, value } = e.target;
     setCreateVehicle((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "brandId" ? parseInt(value) : value,
     }));
   };
   useEffect(() => {
