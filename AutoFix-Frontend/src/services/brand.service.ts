@@ -4,4 +4,8 @@ const getAll = () => {
   return httpClient.get("/brand/");
 };
 
-export default { getAll };
+const updateBrand = (brand: any) => {
+  return httpClient.put("/brand/", brand);
+};
+
+export default { getAll, updateBrand };

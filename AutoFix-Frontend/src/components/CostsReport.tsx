@@ -4,15 +4,12 @@ import repairService from "../services/repair.service";
 export default function CostReport() {
   const [costReports, setCostReports] = useState<any>([]);
 
-  //   const costReports = [{ aa: "aa", bb: "bb" }];
-
   const init = () => {
     repairService
       .getCost()
       .then((response) => {
-        // console.log(response.data);
-
         setCostReports(response.data);
+        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);

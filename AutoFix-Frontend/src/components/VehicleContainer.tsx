@@ -12,8 +12,8 @@ export function VehicleContainer() {
   const [createVehicle, setCreateVehicle] = useState<CreateVehicle>({
     registration: "",
     model: "",
-    vehicleType: "",
-    motorType: "",
+    vehicleType: "SEDAN",
+    motorType: "GASOLINE",
     manufactureYear: "",
     seats: 0,
     mileage: 0,
@@ -26,7 +26,7 @@ export function VehicleContainer() {
       .getAll()
       .then((response: any) => {
         setVehicles(response.data);
-        // console.log(response);
+        console.log(response);
       })
       .catch((e) => console.log(e));
 
@@ -66,6 +66,7 @@ export function VehicleContainer() {
       [name]: name === "brandId" ? parseInt(value) : value,
     }));
   };
+
   useEffect(() => {
     init();
   }, []);

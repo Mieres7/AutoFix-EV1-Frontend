@@ -7,16 +7,24 @@ import { CreateRepair } from "../models/CreateRepair";
 import { ReapairTypeCost } from "../models/RepairTypeCost";
 import { Repair } from "../models/Repair";
 import { VehicleRepair } from "../models/VehicleRepair";
+import brandService from "../services/brand.service";
 
 export function RepairsContainer() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [repairs, setRepairs] = useState<Repair[]>([]);
   const [vr, setVr] = useState<VehicleRepair[]>([]);
+  const [brand, setBrand] = useState<any>({
+    brandId: 0,
+    bonus: true,
+    bonusAmount: 0,
+    discount: 0,
+    period: "",
+  });
 
   const [newRepair, setNewRepair] = useState<CreateRepair>({
-    vehicleId: 0,
+    vehicleId: 1,
     bonus: false,
-    repairType: 0,
+    repairType: 1,
   });
 
   const [typeCost, setTypeCost] = useState<ReapairTypeCost[]>([]);
@@ -53,6 +61,7 @@ export function RepairsContainer() {
       .getAll()
       .then((response) => {
         setVehicles(response.data);
+        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -71,7 +80,9 @@ export function RepairsContainer() {
 
     repairService
       .post(postRepair)
-      .then(() => {
+      .then((response) => {
+        console.log(response.data);
+
         init();
       })
       .catch((e) => {
@@ -85,38 +96,100 @@ export function RepairsContainer() {
     });
   };
 
-  const updateRepair = (timeOption: any, repairId: number) => {
+  const toggleBonus = () => {
+    setNewRepair((prevState) => ({
+      ...prevState,
+      bonus: !prevState.bonus,
+    }));
+  };
+
+  const updateRepair = (timeOption: any, repairId: any) => {
     const now = new Date();
-    console.log(now.toISOString().replace("Z", "")); // Local time sin el 'Z'
 
     switch (timeOption) {
       case 1:
-        const checkOutDate = new Date(now.getTime()); // Crear nueva instancia para evitar mutación de 'now'
-        checkOutDate.setDate(now.getDate() + 2); // Agregar 2 días
+        const checkOutDate = new Date(now.getTime());
+        checkOutDate.setDate(now.getDate());
         const checkOutDateTime = {
-          checkOutDateTime: checkOutDate,
+          checkOutDateTime: formatLocalISO(checkOutDate),
         };
         repairService.update(checkOutDateTime, repairId);
         break;
       case 2:
-        const customerDate = new Date(now.getTime()); // Crear nueva instancia para evitar mutación de 'now'
-        customerDate.setDate(now.getDate() + 4); // Agregar 4 días
+        const customerDate = new Date(now.getTime());
+        customerDate.setDate(now.getDate());
         const costumerDateTime = {
-          costumerDateTime: customerDate,
+          costumerDateTime: formatLocalISO(customerDate),
         };
         repairService.update(costumerDateTime, repairId);
         break;
     }
   };
 
+  function formatLocalISO(date: any) {
+    const isoDate = date.toISOString().split("T")[0];
+    const isoTime = date.toTimeString().split(" ")[0];
+    return isoDate + "T" + isoTime; // Retorna la fecha y hora en formato ISO local
+  }
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setNewRepair((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name === "vehicleId") {
+      // Convertir el valor de vehicleId de string a number
+      setNewRepair((prev) => ({
+        ...prev,
+        [name]: Number(value),
+      }));
+    } else {
+      // Manejar otros inputs normalmente
+      setNewRepair((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleChange2 = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+
+    if (name === "brandId") {
+      setBrand((prevBrand: any) => ({
+        ...prevBrand,
+        brandId: Number(value),
+      }));
+    } else if (name === "bonusAmount") {
+      setBrand((prevBrand: any) => ({
+        ...prevBrand,
+        bonusAmount: Number(value),
+      }));
+    } else if (name === "discount") {
+      setBrand((prevBrand: any) => ({
+        ...prevBrand,
+        discount: Number(value),
+      }));
+    } else if (name === "period") {
+      setBrand((prevBrand: any) => ({
+        ...prevBrand,
+        period: value,
+      }));
+    }
+  };
+
+  const updateBonus = () => {
+    console.log(brand);
+
+    brandService
+      .updateBrand(brand)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   useEffect(() => {
@@ -211,35 +284,64 @@ export function RepairsContainer() {
             <button type="submit" className="input-form-double">
               Save
             </button>
-            <button className="input-form-double">
+            <button
+              type="button"
+              onClick={toggleBonus}
+              className="input-form-double"
+            >
               <SparkleIcon />
             </button>
           </div>
         </form>
         <div className="bonus-form flex-column">
-          <div className="repair-form-text ">Bonus Register</div>
+          <div className="repair-form-text">Bonus Register</div>
           Brand
-          <select name="brand" id="" className="input-form">
-            {bonusBrands.map((brand) => (
-              <option value="">{brand}</option>
+          <select
+            name="brandId"
+            className="input-form"
+            value={brand.brandId}
+            onChange={handleChange2}
+          >
+            {bonusBrands.map((brand, index) => (
+              <option key={index} value={index + 1}>
+                {brand}
+              </option>
             ))}
           </select>
           <div className="flex-row gap-10">
             <div className="flex-column">
               Amount
-              <input type="number" className="input-form-triple" />
+              <input
+                type="number"
+                name="bonusAmount"
+                className="input-form-triple"
+                value={brand.bonusAmount}
+                onChange={handleChange2}
+              />
             </div>
             <div className="flex-column">
               Discount
-              <input type="number" className="input-form-triple" />
+              <input
+                type="number"
+                name="discount"
+                className="input-form-triple"
+                value={brand.discount}
+                onChange={handleChange2}
+              />
             </div>
             <div className="flex-column">
               Period
-              <input type="text" className="input-form-triple" />
+              <input
+                name="period"
+                // type="text"
+                className="input-form-triple"
+                value={brand.period}
+                onChange={handleChange2}
+              />
             </div>
           </div>
           Save Bonus
-          <button type="submit" className="input-form">
+          <button type="submit" className="input-form" onClick={updateBonus}>
             Save
           </button>
         </div>

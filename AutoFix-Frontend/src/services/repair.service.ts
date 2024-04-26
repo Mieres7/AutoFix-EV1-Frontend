@@ -1,11 +1,11 @@
 import httpClient from "../http-common.ts";
 
 const getAll = () => {
-  return httpClient.get("/repair/s");
+  return httpClient.get("/repair/");
 };
 
 const getTotalCost = (id: any) => {
-  return httpClient.get(`/repair/${id}/hola`);
+  return httpClient.get(`/repair/${id}`);
 };
 
 const post = (data: any) => {
