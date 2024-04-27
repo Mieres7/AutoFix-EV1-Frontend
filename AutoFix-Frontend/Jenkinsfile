@@ -12,10 +12,12 @@ pipeline{
         }
         stage("Build and Push Docker Image"){
             steps{
-                script{
-                    withDockerRegistry(credentialsId: 'docker-credentials'){
-                    bat "docker build -t mieres/autofix-frontend:latest ."
-                    bat "docker push mieres/autofix-frontend:latest"
+                dir("AutoFix-Frontend"){
+                    script{
+                        withDockerRegistry(credentialsId: 'docker-credentials'){
+                        bat "docker build -t mieres/autofix-frontend:latest ."
+                        bat "docker push mieres/autofix-frontend:latest"
+                        }
                     }
                 }                    
             }
