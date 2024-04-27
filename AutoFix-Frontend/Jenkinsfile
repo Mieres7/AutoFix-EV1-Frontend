@@ -4,8 +4,8 @@ pipeline{
         stage("Build Frontend"){
             steps{
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Mieres7/AutoFix-EV1-Frontend']])
-                bat "npm install"
-                bat "npm run build"
+                bat "pnpm install"
+                bat "pnpm run build"
             }
         }
         stage("Build and Push Docker Image"){
