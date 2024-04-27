@@ -14,7 +14,7 @@ export function RepairsContainer() {
   const [repairs, setRepairs] = useState<Repair[]>([]);
   const [vr, setVr] = useState<VehicleRepair[]>([]);
   const [brand, setBrand] = useState<any>({
-    brandId: 0,
+    brandId: 1,
     bonus: true,
     bonusAmount: 0,
     discount: 0,
@@ -82,7 +82,6 @@ export function RepairsContainer() {
       .post(postRepair)
       .then((response) => {
         console.log(response.data);
-
         init();
       })
       .catch((e) => {

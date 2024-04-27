@@ -17,7 +17,7 @@ export function VehicleContainer() {
     manufactureYear: "",
     seats: 0,
     mileage: 0,
-    brandId: 0,
+    brandId: 1,
   });
   const [brands, setBrands] = useState<Brand[]>([]);
 
@@ -40,7 +40,7 @@ export function VehicleContainer() {
     const { brandId, vehicleType, motorType, ...vehicle } = createVehicle;
     const postVehicle = {
       ...vehicle,
-      brandId: parseInt((brandId + 1) as any),
+      brandId: parseInt(brandId as any),
       vehicleType: vehicleType.toUpperCase(),
       motorType: motorType.toUpperCase(),
     };
