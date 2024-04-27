@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage("Build Frontend"){
             steps{
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Mieres7/AutoFix-EV1-Frontend']])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Mieres7/AutoFix-EV1-Frontend/AutoFix-Frontend']])
                 bat "pnpm install"
                 bat "pnpm run build"
             }
