@@ -8,4 +8,8 @@ const post = (data: any) => {
   return httpClient.post("/vehicle/", data);
 };
 
-export default { getAll, post };
+const deleteVehicle = (id: any) => {
+  return httpClient.delete(`/vehicle/${id}`);
+};
+
+export default { getAll, post, deleteVehicle };

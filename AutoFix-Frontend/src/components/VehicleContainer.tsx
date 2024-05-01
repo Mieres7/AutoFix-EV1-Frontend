@@ -5,9 +5,48 @@ import { Vehicle } from "../models/Vehicle";
 import { CreateVehicle } from "../models/CreateVehicle";
 import { Brand } from "../models/Brand";
 import brandService from "../services/brand.service";
+import { PencilIcon, TrashIcon } from "../assets/Icons";
 
 export function VehicleContainer() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+
+  const testVehicles = [
+    {
+      registration: "ABCD12",
+      model: "Corolla",
+      vehicleType: "Sedan",
+      motorType: "Gasoline",
+      mileage: 12000,
+    },
+    {
+      registration: "ABCD13",
+      model: "Corolla",
+      vehicleType: "Sedan",
+      motorType: "Gasoline",
+      mileage: 12000,
+    },
+    {
+      registration: "ABCD14",
+      model: "Corolla",
+      vehicleType: "Sedan",
+      motorType: "Gasoline",
+      mileage: 12000,
+    },
+    {
+      registration: "ABCD14",
+      model: "Corolla",
+      vehicleType: "Sedan",
+      motorType: "Gasoline",
+      mileage: 12000,
+    },
+    {
+      registration: "ABCD14",
+      model: "Corolla",
+      vehicleType: "Sedan",
+      motorType: "Gasoline",
+      mileage: 12000,
+    },
+  ];
 
   const [createVehicle, setCreateVehicle] = useState<CreateVehicle>({
     registration: "",
@@ -33,6 +72,15 @@ export function VehicleContainer() {
     brandService.getAll().then((response: any) => {
       setBrands(response.data);
     });
+  };
+
+  const deleteVehicle = (id: any): any => {
+    vehicleService
+      .deleteVehicle(id)
+      .then()
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   const addVehicle = (e: React.FormEvent): any => {
@@ -76,11 +124,23 @@ export function VehicleContainer() {
       <div className="vehicles">
         {vehicles.map((vehicle) => (
           <div className="vehicle-item">
-            Registration: {vehicle.registration} <br />
-            Model: {vehicle.model} <br />
-            Type: {vehicle.vehicleType} <br />
-            Motor: {vehicle.motorType} <br />
-            Mileage: {vehicle.mileage}
+            <div className="vehicle-item-icons">
+              <PencilIcon />
+
+              <button onClick={deleteVehicle(vehicle.vehicleId)}>
+                <TrashIcon />
+              </button>
+            </div>
+            <div className="vehicle-item-text flex-column">
+              <span>TOYOTA {vehicle.model.toUpperCase()}</span>
+              <span className="a">
+                {vehicle.motorType} - {vehicle.vehicleType}
+              </span>
+            </div>
+            <div className="vehicle-km">
+              <span>Km: {vehicle.mileage}</span>
+              <span className="a">{vehicle.registration}</span>
+            </div>
           </div>
         ))}
       </div>

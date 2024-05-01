@@ -424,7 +424,6 @@
   grid-area: vehicles;
   width: 99%;
   max-height: 533px;
-  /* border: 2px solid rgb(0, 0, 0); */
   border-bottom-left-radius: 16px;
   border-top-left-radius: 16px;
   display: flex;
@@ -432,17 +431,64 @@
   flex-direction: row;
   overflow: hidden;
   overflow-y: auto;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .vehicle-item {
   margin: 10px;
-  width: 41%;
-  height: 200px;
+  width: 26%;
+  height: 250px;
   border: 0.5px solid rgb(184, 184, 184);
   border-radius: 10px;
-  /* background: #4a7e4f; */
+  background: #ffffff;
   padding: 20px;
   display: flex;
+  flex-direction: column;
+  box-shadow: 0.5px 0.5px 5px rgb(131, 131, 131);
+  transform-style: preserve-3d;
+  transition: all 0.8s ease;
+  /* gap: 120px; */
+}
+
+.vehicle-item-icons {
+  height: 10%;
+  width: 100%;
+  gap: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+
+.vehicle-item-icons > button {
+  all: unset;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.vehicle-item-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: larger;
+  margin-top: 110px;
+}
+
+.vehicle-km {
+  height: 100%;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  font-weight: 200;
+  font-size: medium;
+  /* margin-top: 30px; */
+}
+
+.a {
+  font-weight: 300;
+  font-size: medium;
 }
 
 /* Repairs Container */
