@@ -8,10 +8,6 @@ export default function SummaryTypeReport() {
     repairService
       .getType()
       .then((response) => {
-        console.log("hols");
-
-        console.log(response.data);
-
         setTypes(response.data);
       })
       .catch((e) => {
@@ -25,7 +21,7 @@ export default function SummaryTypeReport() {
 
   return (
     <div className="query-container">
-      <table className="motor-table">
+      <table className="motor-table content-table">
         <thead>
           <tr>
             <th>Repair Type</th>

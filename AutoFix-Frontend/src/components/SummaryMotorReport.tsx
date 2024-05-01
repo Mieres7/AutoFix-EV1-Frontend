@@ -25,7 +25,7 @@ export default function SummaryMotorReport() {
 
   return (
     <div className="query-container">
-      <table className="motor-table">
+      <table className="motor-table content-table">
         <thead>
           <tr>
             <th>Repair Type</th>
