@@ -126,7 +126,6 @@ export function VehicleContainer() {
           <div className="vehicle-item">
             <div className="vehicle-item-icons">
               <PencilIcon />
-
               <button onClick={deleteVehicle(vehicle.vehicleId)}>
                 <TrashIcon />
               </button>
