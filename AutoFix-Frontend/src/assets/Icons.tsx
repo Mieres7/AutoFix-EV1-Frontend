@@ -1,5 +1,3 @@
-import { renderIntoDocument } from "react-dom/test-utils";
-
 export function HomeIcon() {
   return (
     <svg

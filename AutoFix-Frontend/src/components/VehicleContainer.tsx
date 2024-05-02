@@ -10,43 +10,43 @@ import { PencilIcon, TrashIcon } from "../assets/Icons";
 export function VehicleContainer() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 
-  const testVehicles = [
-    {
-      registration: "ABCD12",
-      model: "Corolla",
-      vehicleType: "Sedan",
-      motorType: "Gasoline",
-      mileage: 12000,
-    },
-    {
-      registration: "ABCD13",
-      model: "Corolla",
-      vehicleType: "Sedan",
-      motorType: "Gasoline",
-      mileage: 12000,
-    },
-    {
-      registration: "ABCD14",
-      model: "Corolla",
-      vehicleType: "Sedan",
-      motorType: "Gasoline",
-      mileage: 12000,
-    },
-    {
-      registration: "ABCD14",
-      model: "Corolla",
-      vehicleType: "Sedan",
-      motorType: "Gasoline",
-      mileage: 12000,
-    },
-    {
-      registration: "ABCD14",
-      model: "Corolla",
-      vehicleType: "Sedan",
-      motorType: "Gasoline",
-      mileage: 12000,
-    },
-  ];
+  // const testVehicles = [
+  //   {
+  //     registration: "ABCD12",
+  //     model: "Corolla",
+  //     vehicleType: "Sedan",
+  //     motorType: "Gasoline",
+  //     mileage: 12000,
+  //   },
+  //   {
+  //     registration: "ABCD13",
+  //     model: "Corolla",
+  //     vehicleType: "Sedan",
+  //     motorType: "Gasoline",
+  //     mileage: 12000,
+  //   },
+  //   {
+  //     registration: "ABCD14",
+  //     model: "Corolla",
+  //     vehicleType: "Sedan",
+  //     motorType: "Gasoline",
+  //     mileage: 12000,
+  //   },
+  //   {
+  //     registration: "ABCD14",
+  //     model: "Corolla",
+  //     vehicleType: "Sedan",
+  //     motorType: "Gasoline",
+  //     mileage: 12000,
+  //   },
+  //   {
+  //     registration: "ABCD14",
+  //     model: "Corolla",
+  //     vehicleType: "Sedan",
+  //     motorType: "Gasoline",
+  //     mileage: 12000,
+  //   },
+  // ];
 
   const [createVehicle, setCreateVehicle] = useState<CreateVehicle>({
     registration: "",
