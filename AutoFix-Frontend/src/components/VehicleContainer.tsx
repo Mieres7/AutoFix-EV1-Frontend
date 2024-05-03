@@ -30,7 +30,6 @@ export function VehicleContainer() {
       })
       .catch((e) => {
         console.log("aaaa");
-
         console.log(e);
       });
   };
@@ -70,7 +69,6 @@ export function VehicleContainer() {
       .post(postVehicle)
       .then((response) => {
         console.log(response.data);
-
         init();
       })
       .catch((e) => {
