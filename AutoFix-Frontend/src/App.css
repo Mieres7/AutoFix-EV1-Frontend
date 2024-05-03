@@ -61,6 +61,7 @@
   flex-direction: column;
   overflow: hidden;
   box-shadow: 3px 0px 4px rgb(191, 191, 191);
+  box-shadow: 3px 0px 4px red;
   transition: width 0.3s ease;
   grid-area: side-bar;
 }
