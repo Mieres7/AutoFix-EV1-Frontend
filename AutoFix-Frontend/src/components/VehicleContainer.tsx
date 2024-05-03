@@ -22,19 +22,19 @@ export function VehicleContainer() {
   });
   const [brands, setBrands] = useState<Brand[]>([]);
 
-  const deleteVehicle = (id: any): any => {
-    vehicleService
-      .deleteVehicle(id)
-      .then(() => {
-        console.log("xddxd");
+  // const deleteVehicle = (id: any): any => {
+  //   vehicleService
+  //     .deleteVehicle(id)
+  //     .then(() => {
+  //       console.log("xddxd");
 
-        init();
-      })
-      .catch((e) => {
-        console.log("aaaa");
-        console.log(e);
-      });
-  };
+  //       init();
+  //     })
+  //     .catch((e) => {
+  //       console.log("aaaa");
+  //       console.log(e);
+  //     });
+  // };
 
   const init = () => {
     vehicleService
@@ -101,7 +101,7 @@ export function VehicleContainer() {
               <PencilIcon />
               <button
                 type="button"
-                onClick={() => deleteVehicle(vehicle.vehicleId)}
+                // onClick={() => deleteVehicle(vehicle.vehicleId)}
               >
                 <TrashIcon />
               </button>
