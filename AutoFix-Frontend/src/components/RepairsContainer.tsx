@@ -249,7 +249,7 @@ export function RepairsContainer() {
       </div>
       <div className="repair-actions">
         <form className="repair-form flex-column gap-5" onSubmit={addRepair}>
-          <div className="repair-form-text">Add Repair</div>
+          <div className="repair-form-text">Add Repair AUTOFIX</div>
           Vehicle
           <select
             name="vehicleId"
