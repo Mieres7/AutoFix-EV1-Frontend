@@ -10,44 +10,6 @@ import { PencilIcon, TrashIcon } from "../assets/Icons";
 export function VehicleContainer() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 
-  // const testVehicles = [
-  //   {
-  //     registration: "ABCD12",
-  //     model: "Corolla",
-  //     vehicleType: "Sedan",
-  //     motorType: "Gasoline",
-  //     mileage: 12000,
-  //   },
-  //   {
-  //     registration: "ABCD13",
-  //     model: "Corolla",
-  //     vehicleType: "Sedan",
-  //     motorType: "Gasoline",
-  //     mileage: 12000,
-  //   },
-  //   {
-  //     registration: "ABCD14",
-  //     model: "Corolla",
-  //     vehicleType: "Sedan",
-  //     motorType: "Gasoline",
-  //     mileage: 12000,
-  //   },
-  //   {
-  //     registration: "ABCD14",
-  //     model: "Corolla",
-  //     vehicleType: "Sedan",
-  //     motorType: "Gasoline",
-  //     mileage: 12000,
-  //   },
-  //   {
-  //     registration: "ABCD14",
-  //     model: "Corolla",
-  //     vehicleType: "Sedan",
-  //     motorType: "Gasoline",
-  //     mileage: 12000,
-  //   },
-  // ];
-
   const [createVehicle, setCreateVehicle] = useState<CreateVehicle>({
     registration: "",
     model: "",
@@ -60,6 +22,19 @@ export function VehicleContainer() {
   });
   const [brands, setBrands] = useState<Brand[]>([]);
 
+  const deleteVehicle = (id: any): any => {
+    vehicleService
+      .deleteVehicle(id)
+      .then(() => {
+        init();
+      })
+      .catch((e) => {
+        console.log("aaaa");
+
+        console.log(e);
+      });
+  };
+
   const init = () => {
     vehicleService
       .getAll()
@@ -69,15 +44,13 @@ export function VehicleContainer() {
       })
       .catch((e) => console.log(e));
 
-    brandService.getAll().then((response: any) => {
-      setBrands(response.data);
-    });
-  };
+    brandService
+      .getAll()
+      .then((response) => {
+        console.log(response.data);
 
-  const deleteVehicle = (id: any): any => {
-    vehicleService
-      .deleteVehicle(id)
-      .then()
+        setBrands(response.data);
+      })
       .catch((e) => {
         console.log(e);
       });
@@ -126,12 +99,12 @@ export function VehicleContainer() {
           <div className="vehicle-item">
             <div className="vehicle-item-icons">
               <PencilIcon />
-              <button onClick={deleteVehicle(vehicle.vehicleId)}>
+              <button onClick={() => deleteVehicle(vehicle.vehicleId)}>
                 <TrashIcon />
               </button>
             </div>
             <div className="vehicle-item-text flex-column">
-              <span>TOYOTA {vehicle.model.toUpperCase()}</span>
+              <span>{vehicle.model.toUpperCase()}</span>
               <span className="a">
                 {vehicle.motorType} - {vehicle.vehicleType}
               </span>

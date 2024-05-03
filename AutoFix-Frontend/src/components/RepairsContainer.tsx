@@ -128,21 +128,21 @@ export function RepairsContainer() {
   function formatLocalISO(date: any) {
     const isoDate = date.toISOString().split("T")[0];
     const isoTime = date.toTimeString().split(" ")[0];
-    return isoDate + "T" + isoTime; // Retorna la fecha y hora en formato ISO local
+    return isoDate + "T" + isoTime;
   }
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
+    console.log(newRepair.vehicleId);
+
     const { name, value } = e.target;
     if (name === "vehicleId") {
-      // Convertir el valor de vehicleId de string a number
       setNewRepair((prev) => ({
         ...prev,
         [name]: Number(value),
       }));
     } else {
-      // Manejar otros inputs normalmente
       setNewRepair((prev) => ({
         ...prev,
         [name]: value,
@@ -202,8 +202,11 @@ export function RepairsContainer() {
       <div className="repair-list">
         {vehicles.map((vehicle) => (
           <div className="repair-item">
-            <div key={vehicle.vehicleId}>
+            <div className="repair-item-text">
               Vehicle: {vehicle.registration}
+              <div>{vehicle.model}</div>
+            </div>
+            <div key={vehicle.vehicleId}>
               <ul>
                 {vr
                   .filter(
@@ -215,30 +218,35 @@ export function RepairsContainer() {
                       (p) => p.repairId === vehicleRepair.repairId
                     );
                     return repair ? (
-                      <li key={`${repair.repairId}-${vehicle.vehicleId}`}>
-                        Repair Type {repair.repairTypeCostId}
+                      <li
+                        className="repair-item-2"
+                        key={`${repair.repairId}-${vehicle.vehicleId}`}
+                      >
+                        Repair Type: {repair.repairTypeCostId}
                         <span>Total Cost: {repair.totalCost}</span>
-                        <button
-                          className="input-form"
-                          type="button"
-                          onClick={() => getTotalCost(repair.repairId)}
-                        >
-                          Get Cost
-                        </button>
-                        <button
-                          className="input-form"
-                          type="button"
-                          onClick={() => updateRepair(1, repair.repairId)}
-                        >
-                          CheckOut
-                        </button>
-                        <button
-                          className="input-form"
-                          type="button"
-                          onClick={() => updateRepair(2, repair.repairId)}
-                        >
-                          Leave
-                        </button>
+                        <div className="flex-row gap-10">
+                          <button
+                            className="input-form"
+                            type="button"
+                            onClick={() => getTotalCost(repair.repairId)}
+                          >
+                            Get Cost
+                          </button>
+                          <button
+                            className="input-form"
+                            type="button"
+                            onClick={() => updateRepair(1, repair.repairId)}
+                          >
+                            CheckOut
+                          </button>
+                          <button
+                            className="input-form"
+                            type="button"
+                            onClick={() => updateRepair(2, repair.repairId)}
+                          >
+                            Leave
+                          </button>
+                        </div>
                       </li>
                     ) : null;
                   })}
