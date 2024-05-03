@@ -26,6 +26,8 @@ export function VehicleContainer() {
     vehicleService
       .deleteVehicle(id)
       .then(() => {
+        console.log("xddxd");
+
         init();
       })
       .catch((e) => {
@@ -97,7 +99,10 @@ export function VehicleContainer() {
           <div className="vehicle-item">
             <div className="vehicle-item-icons">
               <PencilIcon />
-              <button onClick={() => deleteVehicle(vehicle.vehicleId)}>
+              <button
+                type="button"
+                onClick={() => deleteVehicle(vehicle.vehicleId)}
+              >
                 <TrashIcon />
               </button>
             </div>
