@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Vehicles from "./pages/Vehicles";
 import { Repairs } from "./pages/Repairs";
 import { Reports } from "./pages/Reports";
+import History from "./pages/History";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/vehicles" element={<Vehicles />} />
           <Route path="/repairs" element={<Repairs />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/history" element={<History />} />
         </Routes>
       </BrowserRouter>
     </>

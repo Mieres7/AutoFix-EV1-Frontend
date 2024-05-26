@@ -1,47 +1,46 @@
 import React, { useState } from "react";
-import CostReport from "./CostsReport";
-import AverageTimeReport from "./AverateTimeReport";
-import SummaryMotorReport from "./SummaryMotorReport";
-import SummryTypeReport from "./SummryTypeReport";
+import { FirstReport } from "./FirstReport";
+import { SecondReport } from "./SecondReport";
 
 export function ReportsContainer() {
-  const [activeComponent, setActiveComponent] = useState<React.FC>(
-    () => CostReport
-  );
-
-  const handleClick = (Component: React.FC) => {
-    setActiveComponent(() => Component);
-  };
-
-  const ActiveComponent = activeComponent;
+  const months: string[] = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   return (
     <div className="reports-container">
       <div className="report-filters flex-row">
-        <button className="input-form " onClick={() => handleClick(CostReport)}>
-          Costs Reports
-        </button>
-        <button
-          className="input-form"
-          onClick={() => handleClick(SummryTypeReport)}
-        >
-          Summary Type Report
-        </button>
-        <button
-          className="input-form"
-          onClick={() => handleClick(AverageTimeReport)}
-        >
-          Average Time Report
-        </button>
-        <button
-          className="input-form"
-          onClick={() => handleClick(SummaryMotorReport)}
-        >
-          Summary Motor Report
-        </button>
+        <select value="report" id="Report" className="input-form">
+          <option value="costs">Costs</option>
+          <option value="variation">Variation</option>
+        </select>
+        <select className="input-form" name="month" id="">
+          {months.map((month) => (
+            <option value="">{month}</option>
+          ))}
+        </select>
+        <input
+          type="text"
+          name="Year"
+          placeholder="Year"
+          className="input-form-triple"
+        />
+        <button className="input-form-triple">Search</button>
       </div>
       <div className="report-tables">
-        <ActiveComponent />
+        {/* <FirstReport /> */}
+        <SecondReport />
       </div>
     </div>
   );

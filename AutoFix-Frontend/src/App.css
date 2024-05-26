@@ -46,6 +46,17 @@
   width: 100%;
 }
 
+.history {
+  display: grid;
+  grid-template-rows: 12.24% auto;
+  grid-template-columns: 12.24% auto;
+  grid-template-areas:
+    "header header"
+    "history-container history-container";
+  height: 100vh;
+  width: 100%;
+}
+
 /* COMPONENTS */
 
 /* SideBar */
@@ -72,7 +83,6 @@
   justify-content: center;
   margin: 15px 20px 20px 20px;
   color: black;
-
   font-size: 50px;
 }
 
@@ -176,6 +186,40 @@
 
 .icon-box:hover {
   box-shadow: 1px 1px 7px rgb(46, 150, 54);
+}
+
+/* Header 2 */
+
+.header-left-items2 {
+  display: flex;
+  flex-direction: row;
+  padding-top: 5px;
+  color: #000;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  /* font-size: 50px; */
+}
+
+.header-left-items2 > span {
+  font-family: "Anton";
+  font-weight: 600;
+  font-size: xx-large;
+  font-size: 50px;
+}
+
+.header-left-items2 > ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  gap: 20px;
+}
+.header-left-items2 > ul > li > a {
+  text-decoration: none;
+  color: #585858;
+}
+.header-left-items2 > ul > li > a:hover {
+  color: rgb(46, 150, 54);
 }
 
 /* Home Container */
@@ -576,21 +620,21 @@
   grid-area: reports-container;
   padding: 50px;
   display: grid;
-  grid-template-rows: 10% 80%;
+  grid-template-rows: 10% 90%;
   grid-template-areas:
     "report-filters"
     "report-tables";
 }
 
 .report-filters {
+  grid-area: report-filters;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  gap: 20px;
 }
 
 .report-tables {
-  max-height: 535px;
-  display: flex;
+  grid-area: report-tables;
 }
 
 .query-container {
@@ -673,16 +717,23 @@
   justify-content: space-between;
 }
 
+/* History container */
+
+.history-container {
+  grid-area: history-container;
+  padding: 50px;
+}
+
 /* table */
 
 .content-table {
   border-collapse: collapse;
-  /* margin: 25px 0; */
   font-size: 0.9em;
-  /* min-width: 400px; */
   border-radius: 5px 5px 0 0;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  width: 100%; /* Asegura que la tabla use todo el ancho disponible */
+  table-layout: fixed; /* Asegura que todas las columnas tengan el mismo ancho */
 }
 
 .content-table thead tr {
@@ -695,6 +746,10 @@
 .content-table th,
 .content-table td {
   padding: 12px 15px;
+  white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
+  text-align: center; /* Centra el contenido de las celdas */
+  overflow: hidden; /* Evita desbordamiento de contenido */
+  text-overflow: ellipsis; /* Añade "..." si el contenido excede el ancho de la celda */
 }
 
 .content-table tbody tr {
