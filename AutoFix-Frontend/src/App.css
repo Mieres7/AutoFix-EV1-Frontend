@@ -57,6 +57,17 @@
   width: 100%;
 }
 
+.repairlist {
+  display: grid;
+  grid-template-rows: 12.24% auto;
+  grid-template-columns: 12.24% auto;
+  grid-template-areas:
+    "side-bar header"
+    "side-bar  repairlist-container";
+  height: 100vh;
+  width: 100%;
+}
+
 /* COMPONENTS */
 
 /* SideBar */
@@ -467,7 +478,7 @@
 .vehicles {
   grid-area: vehicles;
   width: 99%;
-  max-height: 533px;
+  max-height: 690px;
   border-bottom-left-radius: 16px;
   border-top-left-radius: 16px;
   display: flex;
@@ -545,32 +556,32 @@
 }
 
 .repair-list {
+  display: flex;
   grid-area: repair-list;
   width: 99%;
-  max-height: 533px;
-  /* border: 2px solid rgb(0, 0, 0); */
+  max-height: 690px;
   border-bottom-left-radius: 16px;
   border-top-left-radius: 16px;
-  display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   overflow: hidden;
   overflow-y: auto;
-  align-items: flex-start;
-  justify-content: center;
+  align-content: baseline;
 }
 
 .repair-item {
-  /* height: 70px; */
-  width: 95%;
-  padding: 10px;
-  /* align-items: center; */
-  margin-bottom: 10px;
+  margin: 10px;
+  width: 26%;
+  height: 150px;
   border-radius: 10px;
-  border: 0.5px solid rgb(184, 184, 184);
+  background: #ffffff;
+  padding: 20px;
   display: flex;
-  /* justify-content: space-between; */
-  /* align-items: center; */
+  flex-direction: column;
+  box-shadow: 0.5px 0.5px 5px rgb(131, 131, 131);
+  transform-style: preserve-3d;
+  transition: all 0.8s ease;
+  gap: 10px;
 }
 
 .repair-item > div {
@@ -724,6 +735,36 @@
   padding: 50px;
 }
 
+.repairlist-container {
+  grid-area: repairlist-container;
+  padding: 50px;
+  display: grid;
+  grid-template-rows: 10% 90%;
+  grid-template-areas:
+    "add-repair"
+    "list-repairs";
+}
+
+.add-repair {
+  grid-area: add-repair;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  /* justify-content: space-between; */
+}
+
+.extra2 {
+  margin-left: 30px;
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.no-spinner {
+  -moz-appearance: textfield;
+}
 /* table */
 
 .content-table {

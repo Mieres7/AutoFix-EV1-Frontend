@@ -1,5 +1,5 @@
 export interface CreateRepair {
-  vehicleId: number;
+  repairs: string[];
+  registration: string;
   bonus: boolean;
-  repairType: number;
 }

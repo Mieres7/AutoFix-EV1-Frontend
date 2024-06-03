@@ -22,6 +22,9 @@ export function Header2() {
           <li>
             <NavLink to="/history">History</NavLink>
           </li>
+          <li>
+            <NavLink to="/repairlist">Services</NavLink>
+          </li>
         </ul>
       </div>
       <div className="header-right-items">

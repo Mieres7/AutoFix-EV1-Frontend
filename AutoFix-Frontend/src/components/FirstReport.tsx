@@ -1,38 +1,30 @@
-export function FirstReport() {
-  const vehicleRepairReports = [
-    {
-      reportId: 1,
-      repairTypeName: "Regular Maintenance",
-      month: "02",
-      year: "2024",
-      sedan: 5,
-      sedanAmount: 1500,
-      hatchback: 3,
-      hatchbackAmount: 900,
-      pickup: 2,
-      pickupAmount: 1100,
-      suv: 4,
-      suvAmount: 1600,
-      van: 1,
-      vanAmount: 700,
-    },
-    {
-      reportId: 2,
-      repairTypeName: "Accident Repair",
-      month: "02",
-      year: "2024",
-      sedan: 2,
-      sedanAmount: 3000,
-      hatchback: 1,
-      hatchbackAmount: 1200,
-      pickup: 1,
-      pickupAmount: 1500,
-      suv: 3,
-      suvAmount: 4500,
-      van: 2,
-      vanAmount: 2200,
-    },
-  ];
+import { useEffect, useState } from "react";
+import msReportService from "../services/ms-report.service";
+
+interface FirstReportProps {
+  month: string;
+  year: string;
+}
+
+export function FirstReport({ month, year }: FirstReportProps) {
+  const [vehicleRepairReports, setVehicleRepairReports] = useState<any[]>([]);
+
+  useEffect(() => {
+    const init = () => {
+      msReportService
+        .getAllReport(month, year)
+        .then((response) => {
+          setVehicleRepairReports(response.data);
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    };
+
+    if (month && year) {
+      init();
+    }
+  }, [month, year]);
 
   return (
     <table className="content-table">
@@ -40,7 +32,7 @@ export function FirstReport() {
         <tr>
           <th>Repair</th>
           <th colSpan={2}>Sedan</th>
-          <th colSpan={2}>Hatcback</th>
+          <th colSpan={2}>Hatchback</th>
           <th colSpan={2}>SUV</th>
           <th colSpan={2}>Pickup</th>
           <th colSpan={2}>VAN</th>
@@ -48,8 +40,8 @@ export function FirstReport() {
         </tr>
       </thead>
       <tbody>
-        {vehicleRepairReports.map((vr) => (
-          <tr>
+        {vehicleRepairReports.map((vr: any, index: number) => (
+          <tr key={index}>
             <td>{vr.repairTypeName}</td>
             <td>{vr.sedan}</td>
             <td>{vr.sedanAmount}</td>

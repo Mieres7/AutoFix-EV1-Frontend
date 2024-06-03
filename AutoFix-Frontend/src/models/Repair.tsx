@@ -10,4 +10,5 @@ export interface Repair {
   ageChargeId: number;
   repairDiscount: number;
   costRecordId: number;
+  registration: string;
 }

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-import vehicleService from "../services/vehicle.service";
 import { Vehicle } from "../models/Vehicle";
 import { CreateVehicle } from "../models/CreateVehicle";
 import { Brand } from "../models/Brand";
-import brandService from "../services/brand.service";
 import { PencilIcon, TrashIcon } from "../assets/Icons";
+
+import msVehicleService from "../services/ms-vehicle.service";
 
 export function VehicleContainer() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -18,34 +18,34 @@ export function VehicleContainer() {
     manufactureYear: "",
     seats: 0,
     mileage: 0,
-    brandId: 1,
+    brand_id: 1,
   });
   const [brands, setBrands] = useState<Brand[]>([]);
 
-  const deleteVehicle = (id: any): any => {
-    vehicleService
-      .deleteVehicle(id)
-      .then(() => {
-        console.log("xddxd");
-        init();
-      })
-      .catch((e) => {
-        console.log("aaaa");
-        console.log(e);
-      });
-  };
+  // const deleteVehicle = (id: any): any => {
+  //   vehicleService
+  //     .deleteVehicle(id)
+  //     .then(() => {
+  //       console.log("xddxd");
+  //       init();
+  //     })
+  //     .catch((e) => {
+  //       console.log("aaaa");
+  //       console.log(e);
+  //     });
+  // };
 
   const init = () => {
-    vehicleService
-      .getAll()
+    msVehicleService
+      .getAllVehicles()
       .then((response: any) => {
         setVehicles(response.data);
         console.log(response);
       })
       .catch((e) => console.log(e));
 
-    brandService
-      .getAll()
+    msVehicleService
+      .getAllBrands()
       .then((response) => {
         console.log(response.data);
 
@@ -58,16 +58,16 @@ export function VehicleContainer() {
 
   const addVehicle = (e: React.FormEvent): any => {
     e.preventDefault();
-    const { brandId, vehicleType, motorType, ...vehicle } = createVehicle;
+    const { brand_id, vehicleType, motorType, ...vehicle } = createVehicle;
     const postVehicle = {
       ...vehicle,
-      brandId: parseInt(brandId as any),
+      brand_id: parseInt(brand_id as any),
       vehicleType: vehicleType.toUpperCase(),
       motorType: motorType.toUpperCase(),
     };
 
-    vehicleService
-      .post(postVehicle)
+    msVehicleService
+      .saveVehicle(postVehicle)
       .then((response) => {
         console.log(response.data);
         init();
@@ -83,7 +83,7 @@ export function VehicleContainer() {
     const { name, value } = e.target;
     setCreateVehicle((prev) => ({
       ...prev,
-      [name]: name === "brandId" ? parseInt(value) : value,
+      [name]: name === "brand_id" ? parseInt(value) : value,
     }));
   };
 
@@ -100,7 +100,7 @@ export function VehicleContainer() {
               <PencilIcon />
               <button
                 type="button"
-                onClick={() => deleteVehicle(vehicle.vehicleId)}
+                // onClick={() => deleteVehicle(vehicle.vehicleId)}
               >
                 <TrashIcon />
               </button>
@@ -204,9 +204,9 @@ export function VehicleContainer() {
           </div>
           Brand
           <select
-            name="brandId"
+            name="brand_id"
             className="input-form"
-            value={createVehicle.brandId}
+            value={createVehicle.brand_id}
             onChange={handleChange}
           >
             {brands.map((brand) => (

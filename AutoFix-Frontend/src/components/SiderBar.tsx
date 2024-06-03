@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import {
   ClockIcon,
+  CloudIcon,
   HomeIcon,
   ReportIcon,
   ToolIcon2,
@@ -59,6 +60,15 @@ export function SideBar() {
             <section className="side-bar-icon-section">
               <ClockIcon />
               <span>History</span>
+            </section>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/repairlist">
+            <div id="active"></div>
+            <section className="side-bar-icon-section">
+              <CloudIcon />
+              <span>Services</span>
             </section>
           </NavLink>
         </li>

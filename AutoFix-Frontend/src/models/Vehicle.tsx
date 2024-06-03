@@ -1,5 +1,4 @@
 export interface Vehicle {
-  vehicleId: number;
   registration: string;
   model: string;
   vehicleType: string;

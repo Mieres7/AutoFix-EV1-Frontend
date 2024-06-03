@@ -5,6 +5,6 @@ export interface CreateVehicle {
   manufactureYear: string;
   motorType: string;
   seats: number;
-  brandId: number;
+  brand_id: number;
   mileage: number;
 }

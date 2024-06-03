@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
 import { SparkleIcon } from "../assets/Icons";
-import repairService from "../services/repair.service";
 import { Vehicle } from "../models/Vehicle";
-import vehicleService from "../services/vehicle.service";
 import { CreateRepair } from "../models/CreateRepair";
-import { ReapairTypeCost } from "../models/RepairTypeCost";
 import { Repair } from "../models/Repair";
-import { VehicleRepair } from "../models/VehicleRepair";
-import brandService from "../services/brand.service";
+import Select from "react-select";
+import msRepairlistService from "../services/ms-repairlist.service";
+import msVehicleService from "../services/ms-vehicle.service";
+import msRepairService from "../services/ms-repair.service";
 
 export function RepairsContainer() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [repairs, setRepairs] = useState<Repair[]>([]);
-  const [vr, setVr] = useState<VehicleRepair[]>([]);
+  const [repairss, setRepairss] = useState<Repair[]>([]);
   const [brand, setBrand] = useState<any>({
     brandId: 1,
     bonus: true,
@@ -22,46 +20,38 @@ export function RepairsContainer() {
   });
 
   const [newRepair, setNewRepair] = useState<CreateRepair>({
-    vehicleId: 1,
+    registration: "",
     bonus: false,
-    repairType: 1,
+    repairs: [],
   });
 
-  const [typeCost, setTypeCost] = useState<ReapairTypeCost[]>([]);
+  const [typeCost, setTypeCost] = useState<any>([]);
 
   const init = () => {
-    repairService
-      .getTypeCost()
+    msRepairlistService
+      .getAllNames()
       .then((response) => {
-        setTypeCost(response.data);
+        setTypeCost(transformToOptions(response.data));
       })
       .catch((e) => {
         console.log(e);
       });
 
-    repairService
+    msRepairService
       .getAll()
       .then((response) => {
-        setRepairs(response.data);
+        setRepairss(response.data);
+        console.log(repairss);
       })
       .catch((e) => {
         console.log(e);
       });
 
-    repairService
-      .getAllvr()
-      .then((response) => {
-        setVr(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-
-    vehicleService
-      .getAll()
+    msVehicleService
+      .getAllVehicles()
       .then((response) => {
         setVehicles(response.data);
-        console.log(response.data);
+        console.log(vehicles);
       })
       .catch((e) => {
         console.log(e);
@@ -70,16 +60,9 @@ export function RepairsContainer() {
 
   const addRepair = (e: React.FormEvent): any => {
     e.preventDefault();
-    console.log(newRepair);
-    const { vehicleId, repairType, ...repair } = newRepair;
-    const postRepair = {
-      ...repair,
-      vehicleId: parseInt(vehicleId as any),
-      repairType: parseInt(repairType as any),
-    };
 
-    repairService
-      .post(postRepair)
+    msRepairService
+      .saveRepair(newRepair)
       .then((response) => {
         console.log(response.data);
         init();
@@ -90,7 +73,13 @@ export function RepairsContainer() {
   };
 
   const getTotalCost = (id: any) => {
-    repairService.getTotalCost(id).then(() => {
+    msRepairService.getTotalCost(id).then(() => {
+      init();
+    });
+  };
+
+  const checkOutWorkshop = (id: any) => {
+    msRepairService.checkOutWorkshop(id).then(() => {
       init();
     });
   };
@@ -102,93 +91,34 @@ export function RepairsContainer() {
     }));
   };
 
-  const updateRepair = (timeOption: any, repairId: any) => {
-    const now = new Date();
-
-    switch (timeOption) {
-      case 1:
-        const checkOutDate = new Date(now.getTime());
-        checkOutDate.setDate(now.getDate());
-        const checkOutDateTime = {
-          checkOutDateTime: formatLocalISO(checkOutDate),
-        };
-        repairService.update(checkOutDateTime, repairId);
-        break;
-      case 2:
-        const customerDate = new Date(now.getTime());
-        customerDate.setDate(now.getDate());
-        const costumerDateTime = {
-          costumerDateTime: formatLocalISO(customerDate),
-        };
-        repairService.update(costumerDateTime, repairId);
-        break;
-    }
-  };
-
-  function formatLocalISO(date: any) {
-    const isoDate = date.toISOString().split("T")[0];
-    const isoTime = date.toTimeString().split(" ")[0];
-    return isoDate + "T" + isoTime;
-  }
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    console.log(newRepair.vehicleId);
-
     const { name, value } = e.target;
-    if (name === "vehicleId") {
-      setNewRepair((prev) => ({
-        ...prev,
-        [name]: Number(value),
-      }));
-    } else {
-      setNewRepair((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
+    setNewRepair((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleChange2 = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = event.target;
-
-    if (name === "brandId") {
-      setBrand((prevBrand: any) => ({
-        ...prevBrand,
-        brandId: Number(value),
-      }));
-    } else if (name === "bonusAmount") {
-      setBrand((prevBrand: any) => ({
-        ...prevBrand,
-        bonusAmount: Number(value),
-      }));
-    } else if (name === "discount") {
-      setBrand((prevBrand: any) => ({
-        ...prevBrand,
-        discount: Number(value),
-      }));
-    } else if (name === "period") {
-      setBrand((prevBrand: any) => ({
-        ...prevBrand,
-        period: value,
-      }));
-    }
+  // this function is for the repairName select
+  const handleSelectChange = (selectedOptions: any) => {
+    const selectedValues = selectedOptions
+      ? selectedOptions.map((option: any) => option.value)
+      : [];
+    setNewRepair((prev) => ({
+      ...prev,
+      repairs: selectedValues,
+    }));
+    console.log(newRepair);
   };
 
-  const updateBonus = () => {
-    console.log(brand);
+  useEffect(() => {
+    console.log(newRepair);
+  }, [newRepair]);
 
-    brandService
-      .updateBrand(brand)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+  const transformToOptions = (list: any) => {
+    return list.map((item: any) => ({ value: item, label: item }));
   };
 
   useEffect(() => {
@@ -200,84 +130,56 @@ export function RepairsContainer() {
   return (
     <div className="repairs-container">
       <div className="repair-list">
-        {vehicles.map((vehicle) => (
+        {repairss.map((r) => (
           <div className="repair-item">
-            <div key={vehicle.vehicleId}>
-              Vehicle: {vehicle.registration}
-              <ul>
-                {vr
-                  .filter(
-                    (vehicleRepair) =>
-                      vehicleRepair.vehicleId === vehicle.vehicleId
-                  )
-                  .map((vehicleRepair) => {
-                    const repair = repairs.find(
-                      (p) => p.repairId === vehicleRepair.repairId
-                    );
-                    return repair ? (
-                      <li key={`${repair.repairId}-${vehicle.vehicleId}`}>
-                        Repair Type {repair.repairTypeCostId}
-                        <span>Total Cost: {repair.totalCost}</span>
-                        <button
-                          className="input-form"
-                          type="button"
-                          onClick={() => getTotalCost(repair.repairId)}
-                        >
-                          Get Cost
-                        </button>
-                        <button
-                          className="input-form"
-                          type="button"
-                          onClick={() => updateRepair(1, repair.repairId)}
-                        >
-                          CheckOut
-                        </button>
-                        <button
-                          className="input-form"
-                          type="button"
-                          onClick={() => updateRepair(2, repair.repairId)}
-                        >
-                          Leave
-                        </button>
-                      </li>
-                    ) : null;
-                  })}
-              </ul>
-            </div>
+            Vehicle: {r.registration}
+            <span>Total Cost: {r.totalCost}</span>
+            <button
+              className="input-form"
+              type="button"
+              onClick={() => checkOutWorkshop(r.repairId)}
+            >
+              CheckOut
+            </button>
+            <button
+              className="input-form"
+              type="button"
+              onClick={() => getTotalCost(r.repairId)}
+            >
+              Get Cost
+            </button>
           </div>
         ))}
       </div>
       <div className="repair-actions">
         <form className="repair-form flex-column gap-5" onSubmit={addRepair}>
-          <div className="repair-form-text">Add Repair AUTOFIX</div>
+          <div className="repair-form-text">Repair Register</div>
           Vehicle
           <select
-            name="vehicleId"
+            name="registration"
             className="input-form"
-            value={newRepair.vehicleId}
+            value={newRepair.registration}
             onChange={handleChange}
           >
             {vehicles.map((vehicle) => (
-              <option key={vehicle.vehicleId} value={vehicle.vehicleId}>
+              <option key={vehicle.registration} value={vehicle.registration}>
                 {" "}
                 {vehicle.registration}{" "}
               </option>
             ))}
           </select>
           Repair Type
-          <select
-            name="repairType"
-            id=""
-            className="input-form"
-            value={newRepair.repairType}
-            onChange={handleChange}
-          >
-            {typeCost.map((tc) => (
-              <option key={tc.repairTypeCostId} value={tc.repairTypeCostId}>
-                {tc.repairType}
-              </option>
-            ))}
-          </select>
+          <Select
+            isMulti
+            name="repairs"
+            options={typeCost}
+            onChange={handleSelectChange}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            value={typeCost.filter((option: any) =>
+              newRepair.repairs.includes(option.value)
+            )}
+          />
           Save Repair
           <div className="flex-row gap-10">
             <button type="submit" className="input-form-double">
@@ -295,12 +197,7 @@ export function RepairsContainer() {
         <div className="bonus-form flex-column">
           <div className="repair-form-text">Bonus Register</div>
           Brand
-          <select
-            name="brandId"
-            className="input-form"
-            value={brand.brandId}
-            onChange={handleChange2}
-          >
+          <select name="brandId" className="input-form" value={brand.brandId}>
             {bonusBrands.map((brand, index) => (
               <option key={index} value={index + 1}>
                 {brand}
@@ -315,7 +212,6 @@ export function RepairsContainer() {
                 name="bonusAmount"
                 className="input-form-triple"
                 value={brand.bonusAmount}
-                onChange={handleChange2}
               />
             </div>
             <div className="flex-column">
@@ -325,7 +221,6 @@ export function RepairsContainer() {
                 name="discount"
                 className="input-form-triple"
                 value={brand.discount}
-                onChange={handleChange2}
               />
             </div>
             <div className="flex-column">
@@ -335,12 +230,11 @@ export function RepairsContainer() {
                 // type="text"
                 className="input-form-triple"
                 value={brand.period}
-                onChange={handleChange2}
               />
             </div>
           </div>
           Save Bonus
-          <button type="submit" className="input-form" onClick={updateBonus}>
+          <button type="submit" className="input-form">
             Save
           </button>
         </div>
