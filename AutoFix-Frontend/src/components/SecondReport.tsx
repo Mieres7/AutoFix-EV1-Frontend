@@ -26,7 +26,7 @@ export function SecondReport({ month, year }: SecondReportProps) {
       "December",
     ];
 
-    const monthIndex = parseInt(month, 10) - 1;
+    const monthIndex = parseInt(month, 10);
 
     if (monthIndex < 0 || monthIndex > 11) {
       throw new Error("Invalid month format. Please use '01' to '12'.");
@@ -64,12 +64,9 @@ export function SecondReport({ month, year }: SecondReportProps) {
       <thead>
         <tr>
           <th rowSpan={2}>Tipo de Reparación</th>
-          {months
-            .slice()
-            .reverse()
-            .map((m) => (
-              <th colSpan={2}>{m}</th>
-            ))}
+          {months.map((m) => (
+            <th colSpan={2}>{m}</th>
+          ))}
         </tr>
         <tr>
           <th>Repair - Cost</th>
@@ -84,21 +81,18 @@ export function SecondReport({ month, year }: SecondReportProps) {
         {reportList.map((r: any) => (
           <tr>
             <td>{r.repairTypeName}</td>
-            {r.data
-              .slice()
-              .reverse()
-              .map((m: any) => (
-                <>
-                  <td>
-                    <div>{m.vehiclesQuantity}</div>
-                    <div>${m.cost}</div>
-                  </td>
-                  <td>
-                    <div>{m.vehiclesQPercentage}%</div>
-                    <div>{m.costPercentage}%</div>
-                  </td>
-                </>
-              ))}
+            {r.data.map((m: any) => (
+              <>
+                <td>
+                  <div>{m.vehiclesQuantity}</div>
+                  <div>${m.cost}</div>
+                </td>
+                <td>
+                  <div>{m.vehiclesQPercentage}%</div>
+                  <div>{m.costPercentage}%</div>
+                </td>
+              </>
+            ))}
           </tr>
         ))}
       </tbody>
