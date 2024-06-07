@@ -11,13 +11,13 @@ import msRepairService from "../services/ms-repair.service";
 export function RepairsContainer() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [repairss, setRepairss] = useState<Repair[]>([]);
-  const [brand, setBrand] = useState<any>({
-    brandId: 1,
-    bonus: true,
-    bonusAmount: 0,
-    discount: 0,
-    period: "",
-  });
+  // const [brand, setBrand] = useState<any>({
+  //   brandId: 1,
+  //   bonus: true,
+  //   bonusAmount: 0,
+  //   discount: 0,
+  //   period: "",
+  // });
 
   const [newRepair, setNewRepair] = useState<CreateRepair>({
     registration: "",
@@ -197,7 +197,7 @@ export function RepairsContainer() {
         <div className="bonus-form flex-column">
           <div className="repair-form-text">Bonus Register</div>
           Brand
-          <select name="brandId" className="input-form" value={brand.brandId}>
+          <select name="brandId" className="input-form">
             {bonusBrands.map((brand, index) => (
               <option key={index} value={index + 1}>
                 {brand}
@@ -211,7 +211,7 @@ export function RepairsContainer() {
                 type="number"
                 name="bonusAmount"
                 className="input-form-triple"
-                value={brand.bonusAmount}
+                // value={brand.bonusAmount}
               />
             </div>
             <div className="flex-column">
@@ -220,7 +220,7 @@ export function RepairsContainer() {
                 type="number"
                 name="discount"
                 className="input-form-triple"
-                value={brand.discount}
+                // value={brand.discount}
               />
             </div>
             <div className="flex-column">
@@ -229,7 +229,7 @@ export function RepairsContainer() {
                 name="period"
                 // type="text"
                 className="input-form-triple"
-                value={brand.period}
+                // value={brand.period}
               />
             </div>
           </div>
